@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Countdown ผู้โดยสาร ปี 2568</title>
+
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #f5f5f5;
+    padding-top: 40px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  #count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .number-box {
+    background: #1f3cff;
+    color: white;
+    font-size: 64px;
+    padding: 20px 18px;
+    margin: 4px;
+    border-radius: 8px;
+    min-width: 60px;
+    transition: transform 0.3s;
+  }
+
+  .celebrate {
+    animation: shake 0.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes shake {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+  }
+
+  .comma {
+    font-size: 64px;
+    margin: 0 4px;
+  }
+
+  .progress-container {
+    width: 80%;
+    height: 26px;
+    background: #ddd;
+    border-radius: 20px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #1f3cff, #4f6cff);
+    transition: width 0.1s linear;
+  }
+
+  .progress-bar.success {
+    background: linear-gradient(90deg, gold, orange);
+  }
+
+  #percent {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #success-text {
+    display: none;
+    margin-top: 20px;
+    font-size: 28px;
+    color: #d4af37;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- โลโก้ -->
+<div style="margin-bottom:20px;">
+  <img src="udon-airport.png" width="120">
+</div>
+
+<h2>Countdown ปี 2568 2,000,000 คน</h2>
+
+<div id="count"></div>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="percent"></div>
+<div id="success-text">🎉 บรรลุเป้าหมาย 2,000,000 คน 🎉</div>
+
+<p id="time"></p>
+
+<script>
+  const target = 2000000;
+  const current = 1971633
+  const duration = 2000;
+
+  const countDiv = document.getElementById("count");
+  const progressBar = document.getElementById("progress");
+  const percentText = document.getElementById("percent");
+  const successText = document.getElementById("success-text");
+
+  const startTime = performance.now();
+
+  function update(timestamp) {
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const value = Math.floor(progress * current);
+
+    countDiv.innerHTML = "";
+    value.toLocaleString("th-TH").split("").forEach(char => {
+      if (char === ",") {
+        const comma = document.createElement("span");
+        comma.className = "comma";
+        comma.textContent = ",";
+        countDiv.appendChild(comma);
+      } else {
+        const box = document.createElement("span");
+        box.className = "number-box";
+        box.textContent = char;
+        countDiv.appendChild(box);
+      }
+    });
+
+    const percent = Math.min((value / target) * 100, 100);
+    progressBar.style.width = percent + "%";
+    percentText.innerText = percent.toFixed(1) + "% ของเป้าหมาย";
+
+    if (percent >= 100) {
+      progressBar.classList.add("success");
+      successText.style.display = "block";
+      document.querySelectorAll(".number-box").forEach(el => {
+        el.classList.add("celebrate");
+      });
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
+
+  const now = new Date();
+  document.getElementById("time").innerText =
+    "อัปเดตล่าสุด: " + now.toLocaleString("th-TH");
+</script>
+
+</body>
+</html>
+
