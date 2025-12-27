@@ -165,24 +165,12 @@
 
 
 <div id="remain" style="margin-top:8px; font-size:18px;"></div>
-const remainText = document.getElementById("remain");
-const remain = Math.max(target - value, 0);
 
-remainText.innerText =
-  "คงเหลืออีก " +
-  remain.toLocaleString("th-TH") +
-  " คน จากเป้าหมาย " +
-  target.toLocaleString("th-TH") +
-  " คน";
-if (percent >= 100) {
-  progressBar.classList.add("success");
-  successText.style.display = "block";
-  remainText.innerText = "ครบเป้าหมาย 2,000,000 คนแล้ว 🎉";
 
-  document.querySelectorAll(".number-box").forEach(el => {
-    el.classList.add("celebrate");
-  });
-}
+
+
+
+
 
 
 
